@@ -1,0 +1,1227 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Generador LC4 - SURA Investments Peru</title>
+  <style>
+    @font-face{font-family:'Sura Sans';src:url('data:font/otf;base64,{{FONT_THIN}}') format('opentype');font-weight:100;font-style:normal}
+    @font-face{font-family:'Sura Sans';src:url('data:font/otf;base64,{{FONT_THIN_ITALIC}}') format('opentype');font-weight:100;font-style:italic}
+    @font-face{font-family:'Sura Sans';src:url('data:font/otf;base64,{{FONT_EXTRALIGHT}}') format('opentype');font-weight:200;font-style:normal}
+    @font-face{font-family:'Sura Sans';src:url('data:font/otf;base64,{{FONT_EXTRALIGHT_ITALIC}}') format('opentype');font-weight:200;font-style:italic}
+    @font-face{font-family:'Sura Sans';src:url('data:font/otf;base64,{{FONT_LIGHT}}') format('opentype');font-weight:300;font-style:normal}
+    @font-face{font-family:'Sura Sans';src:url('data:font/otf;base64,{{FONT_LIGHT_ITALIC}}') format('opentype');font-weight:300;font-style:italic}
+    @font-face{font-family:'Sura Sans';src:url('data:font/otf;base64,{{FONT_REGULAR}}') format('opentype');font-weight:400;font-style:normal}
+    @font-face{font-family:'Sura Sans';src:url('data:font/otf;base64,{{FONT_ITALIC}}') format('opentype');font-weight:400;font-style:italic}
+    @font-face{font-family:'Sura Sans';src:url('data:font/otf;base64,{{FONT_SEMIBOLD}}') format('opentype');font-weight:600;font-style:normal}
+    @font-face{font-family:'Sura Sans';src:url('data:font/otf;base64,{{FONT_SEMIBOLD_ITALIC}}') format('opentype');font-weight:600;font-style:italic}
+    @font-face{font-family:'Sura Sans';src:url('data:font/otf;base64,{{FONT_BOLD}}') format('opentype');font-weight:700;font-style:normal}
+    @font-face{font-family:'Sura Sans';src:url('data:font/otf;base64,{{FONT_BOLD_ITALIC}}') format('opentype');font-weight:700;font-style:italic}
+    @font-face{font-family:'Sura Sans';src:url('data:font/otf;base64,{{FONT_EXTRABOLD}}') format('opentype');font-weight:800;font-style:normal}
+    @font-face{font-family:'Sura Sans';src:url('data:font/otf;base64,{{FONT_EXTRABOLD_ITALIC}}') format('opentype');font-weight:800;font-style:italic}
+    @font-face{font-family:'Sura Sans';src:url('data:font/otf;base64,{{FONT_BLACK}}') format('opentype');font-weight:900;font-style:normal}
+    @font-face{font-family:'Sura Sans';src:url('data:font/otf;base64,{{FONT_BLACK_ITALIC}}') format('opentype');font-weight:900;font-style:italic}
+
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:'Sura Sans',Arial,sans-serif;background:#EFEFEF;min-height:100vh;display:flex;align-items:flex-start;justify-content:center;padding:36px 16px}
+
+    .card{background:#fff;width:100%;max-width:700px;box-shadow:0 2px 20px rgba(22,22,24,.14)}
+
+    /* Header */
+    .card-header{background:#161618 url('data:image/jpeg;base64,{{BANNER_B64}}') 68.4% center/cover no-repeat;height:165px;display:flex;flex-direction:column;justify-content:flex-end}
+    .header-sub{padding:9px 20px;display:flex;align-items:center;gap:9px;background:rgba(22,22,24,.50);border-top:1px solid rgba(255,255,255,.10)}
+    .header-sub svg{width:13px;height:13px;fill:rgba(255,255,255,.5);flex-shrink:0}
+    .header-sub p{font-size:10.5px;color:rgba(255,255,255,.55);letter-spacing:.6px;text-transform:uppercase;font-weight:400}
+
+    /* Body */
+    .card-body{padding:26px 28px 32px}
+
+    .slabel{font-size:10px;font-weight:700;letter-spacing:1.4px;text-transform:uppercase;color:#161618;margin-bottom:12px;margin-top:24px;padding-bottom:7px;border-bottom:2px solid #161618}
+    .slabel:first-child{margin-top:0}
+
+    .field{margin-bottom:14px}
+    .field label{display:block;font-size:12px;font-weight:600;color:#24272A;margin-bottom:5px}
+    .field input,.field select,.field textarea{width:100%;border:1.5px solid #d0d0d0;padding:9px 12px;font-size:13.5px;font-family:'Sura Sans',Arial,sans-serif;color:#161618;background:#fafafa;outline:none;transition:border-color .15s,background .15s;resize:vertical}
+    .field input:focus,.field select:focus,.field textarea:focus{border-color:#161618;background:#fff;box-shadow:0 0 0 3px rgba(22,22,24,.07)}
+    .field input.err,.field select.err,.field textarea.err{border-color:#cc2200;background:#fff8f7}
+    .field textarea{min-height:88px;line-height:1.5}
+    .autoresize{overflow:hidden;resize:none}
+    .field select{cursor:pointer;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='7'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23161618' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;padding-right:32px}
+
+    .frow{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+    .frow-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px}
+    .req{color:#161618;font-weight:700}
+    .hint{font-size:11px;color:#59646E;margin-top:4px}
+
+    /* Bloques de representante */
+    .rep-block{border:1.5px solid #e0e0e0;padding:14px 14px 8px;margin-bottom:12px;position:relative}
+    .rep-num{font-size:10px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;color:#98A3AE;margin-bottom:10px}
+    .btn-remove-rep{position:absolute;top:10px;right:12px;background:none;border:none;cursor:pointer;color:#98A3AE;font-size:18px;line-height:1;padding:0;transition:color .15s}
+    .btn-remove-rep:hover{color:#cc2200}
+
+    /* Modo de actuacion — tag chips */
+    .modo-label{font-size:12px;font-weight:600;color:#24272A;margin-bottom:6px;display:block}
+    .modo-chips{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px}
+    .modo-chip{display:none}
+    .modo-chip+label{padding:6px 14px;border:1.5px solid #d0d0d0;font-size:12px;font-weight:600;color:#59646E;cursor:pointer;transition:all .15s;white-space:nowrap;font-family:'Sura Sans',Arial,sans-serif}
+    .modo-chip:checked+label{border-color:#161618;background:#161618;color:#fff}
+
+    .btn-add-rep{width:100%;margin-top:4px;background:none;border:1.5px dashed #c0c0c0;padding:9px;font-size:12px;font-weight:600;font-family:'Sura Sans',Arial,sans-serif;color:#59646E;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:7px;transition:border-color .15s,color .15s}
+    .btn-add-rep:hover{border-color:#161618;color:#161618}
+    .btn-add-rep svg{width:14px;height:14px;fill:currentColor}
+
+    /* Toggle modo facultades */
+    .fac-toggle{display:flex;gap:0;margin-bottom:14px;border:1.5px solid #161618;width:fit-content}
+    .fac-toggle button{background:none;border:none;padding:7px 18px;font-size:12px;font-weight:600;font-family:'Sura Sans',Arial,sans-serif;color:#161618;cursor:pointer;transition:background .15s,color .15s}
+    .fac-toggle button.active{background:#161618;color:#fff}
+    .fac-toggle button:not(:last-child){border-right:1.5px solid #161618}
+
+    .fac-panel{display:none}
+    .fac-panel.active{display:block}
+
+    /* Boton principal */
+    .btn{width:100%;margin-top:28px;background:#161618;color:#fff;border:none;padding:13px 20px;font-size:13px;font-weight:700;font-family:'Sura Sans',Arial,sans-serif;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;letter-spacing:.8px;text-transform:uppercase;transition:background .15s,transform .1s}
+    .btn:hover{background:#24272A}
+    .btn:active{transform:scale(.99)}
+    .btn svg{width:16px;height:16px;fill:#fff;flex-shrink:0}
+    .btn:disabled{background:#98A3AE;cursor:not-allowed;transform:none}
+
+    /* Toast */
+    .toast{display:none;margin-top:12px;padding:10px 14px;font-size:12.5px;font-weight:600;align-items:center;gap:8px;border-left:3px solid;font-family:'Sura Sans',Arial,sans-serif}
+    .toast.ok{display:flex;background:#f2f4f2;color:#1a2e1a;border-color:#161618}
+    .toast.err{display:flex;background:#fdf0f0;color:#3a1a1a;border-color:#cc2200}
+    .toast svg{width:14px;height:14px;flex-shrink:0}
+
+    .pdf-nota{display:flex;gap:9px;align-items:flex-start;margin-top:14px;padding:11px 13px;background:#f4f5f8;border-left:3px solid #0A2CCE;font-size:11.5px;color:#24272A;line-height:1.55}
+    .pdf-nota svg{width:14px;height:14px;fill:#0A2CCE;flex-shrink:0;margin-top:1px}
+    .pdf-nota b{font-weight:700}
+
+    .footer{padding:12px 20px;background:#24272A;font-size:10.5px;color:rgba(255,255,255,.42);letter-spacing:.3px;line-height:1.5}
+
+    /* Checkboxes de facultades */
+    .fac-checks{display:flex;flex-direction:column;gap:0;margin-bottom:8px;border:1.5px solid #d0d0d0}
+    .fac-check-item{display:flex;align-items:center;gap:10px;padding:7px 11px;cursor:pointer;transition:background .1s;border-bottom:1px solid #ececec;user-select:none}
+    .fac-check-item:last-child{border-bottom:none}
+    .fac-check-item:hover{background:#f5f5f5}
+    .fac-check-item input[type=checkbox]{width:14px;height:14px;accent-color:#161618;cursor:pointer;flex-shrink:0;margin:0}
+    .fac-check-item span{font-size:12.5px;color:#24272A;font-family:'Sura Sans',Arial,sans-serif}
+
+    /* Bloques de actuacion */
+    .bloque-act{border:1.5px solid #e0e0e0;margin-bottom:14px;position:relative}
+    .bloque-act-header{background:#161618;padding:9px 14px;display:flex;align-items:center;justify-content:space-between}
+    .bloque-act-header span{font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:rgba(255,255,255,.7)}
+    .bloque-act-body{padding:14px}
+    .btn-remove-bloque{background:none;border:none;cursor:pointer;color:rgba(255,255,255,.5);font-size:18px;line-height:1;padding:0;transition:color .15s}
+    .btn-remove-bloque:hover{color:#fff}
+    .firmantes-grid{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px}
+    .firmante-chip{display:flex;align-items:center;gap:6px;padding:5px 10px;border:1.5px solid #d0d0d0;cursor:pointer;transition:all .15s;user-select:none;font-family:'Sura Sans',Arial,sans-serif}
+    .firmante-chip input[type=checkbox]{width:13px;height:13px;accent-color:#161618;margin:0;cursor:pointer}
+    .firmante-chip span{font-size:11.5px;color:#24272A}
+    .firmante-chip.sel{border-color:#161618;background:#161618}
+    .firmante-chip.sel span{color:#fff}
+    .grupo-row{display:flex;align-items:center;gap:8px;margin-bottom:6px}
+    .grupo-label{font-size:11px;font-weight:700;color:#161618;white-space:nowrap;min-width:56px}
+    .grupo-chips{display:flex;flex-wrap:wrap;gap:5px}
+    .grupo-chip{display:flex;align-items:center;gap:5px;padding:4px 9px;border:1.5px solid #d0d0d0;cursor:pointer;font-size:11px;font-family:'Sura Sans',Arial,sans-serif;user-select:none;transition:all .15s}
+    .grupo-chip input[type=checkbox]{width:12px;height:12px;accent-color:#161618;margin:0}
+    .grupo-chip.sel{border-color:#161618;background:#161618;color:#fff}
+    .preview-box{background:#f8f9fc;border:1.5px solid #e0e0e0;border-left:3px solid #161618;padding:12px 14px;margin-top:4px;font-size:12px;color:#24272A;line-height:1.6;white-space:pre-wrap;font-family:'Sura Sans',Arial,sans-serif;min-height:48px}
+    .preview-box em{color:#98A3AE;font-style:normal}
+    .preview-section-title{font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#98A3AE;margin-bottom:6px}
+
+    @keyframes spin{to{transform:rotate(360deg)}}
+  </style>
+</head>
+<body>
+<div class="card">
+
+  <div class="card-header">
+    <div class="header-sub">
+      <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8l-6-6zm-1 1.5L18.5 9H13V3.5zM6 20V4h5v7h7v9H6z"/></svg>
+      <p>Generador LC4 &mdash; Observaciones de Cumplimiento Corporativo</p>
+    </div>
+  </div>
+
+  <div class="card-body">
+
+    <!-- DATOS GENERALES -->
+    <div class="slabel">Datos generales</div>
+    <div class="frow-3">
+      <div class="field">
+        <label for="fecha">Fecha <span class="req">*</span></label>
+        <input type="date" id="fecha">
+      </div>
+      <div class="field">
+        <label for="cuc">CUC</label>
+        <input type="text" id="cuc" placeholder="Ej: 44760645">
+      </div>
+      <div class="field" style="grid-column:1/-1">
+        <label for="empresa">Razon social <span class="req">*</span></label>
+        <input type="text" id="empresa" placeholder="Ej: EMPRESA S.A.C.">
+      </div>
+    </div>
+
+    <!-- REPRESENTANTES -->
+    <div class="slabel">Representantes / Apoderados</div>
+    <div id="repsContainer"></div>
+    <button class="btn-add-rep" onclick="agregarRep()">
+      <svg viewBox="0 0 24 24"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
+      Agregar representante
+    </button>
+
+    <!-- DETALLE DE FIRMANTES -->
+    <div class="slabel" style="margin-top:24px">Detalle de firmantes</div>
+
+    <div class="fac-toggle">
+      <button id="btnModoPlantilla" class="active" onclick="setFacMode('plantilla')">Usar plantilla</button>
+      <button id="btnModoManual" onclick="setFacMode('manual')">Texto manual</button>
+    </div>
+
+    <div class="field" id="formatoWrap" style="max-width:290px">
+      <label for="formatoFirmante">Nombrar firmantes como</label>
+      <select id="formatoFirmante" onchange="updatePreview()">
+        <option value="cargo" selected>Cargo</option>
+        <option value="nombre">Nombre</option>
+        <option value="ambos">Cargo y nombre</option>
+      </select>
+    </div>
+
+    <!-- Panel plantilla -->
+    <div id="panelPlantilla" class="fac-panel active">
+      <div class="hint" style="margin-bottom:12px">
+        Cada bloque describe quienes firman, bajo que condicion y que pueden hacer.
+        En las facultades, una linea que empieza con <b>-</b> se convierte en item de lista en el documento.
+      </div>
+      <div id="bloquesContainer"></div>
+      <button class="btn-add-rep" style="margin-bottom:14px" onclick="agregarBloque()">
+        <svg viewBox="0 0 24 24"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
+        Agregar bloque de actuacion
+      </button>
+      <!-- Preview en tiempo real -->
+      <div style="margin-top:4px">
+        <div class="preview-section-title">Vista previa del texto</div>
+        <div class="preview-box" id="previewBox"><em>El texto generado aparecera aqui conforme completes los bloques...</em></div>
+      </div>
+    </div>
+
+    <!-- Panel manual -->
+    <div id="panelManual" class="fac-panel">
+      <div class="field">
+        <textarea id="facManual" class="autoresize" style="min-height:180px" placeholder="Escribir el detalle de firmantes completo tal como debe aparecer en el documento..."></textarea>
+      </div>
+    </div>
+
+    <!-- OBSERVACIONES -->
+    <div class="slabel">Observaciones</div>
+    <div class="field">
+      <textarea id="observaciones" placeholder="Observaciones adicionales (opcional)..." style="min-height:60px"></textarea>
+    </div>
+
+    <button class="btn" id="btnGen" onclick="generarDocumento()">
+      <svg viewBox="0 0 24 24"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
+      Generar y descargar LC4
+    </button>
+    <div class="toast" id="toast"></div>
+
+    <div class="pdf-nota">
+      <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
+      <div>
+        <b>Para obtener el PDF:</b> abrir el documento descargado en Word y usar
+        <b>Archivo &rsaquo; Guardar como &rsaquo; PDF</b>. Conserva el formato exacto de la plantilla oficial.
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">
+    Este documento es generado localmente en su equipo. Ningun dato ingresado es transmitido, almacenado ni procesado fuera de este dispositivo. Para uso interno de SURA Investments Peru &mdash; Cumplimiento Corporativo.
+  </div>
+</div>
+
+<script>
+{{JSZIP}}
+{{FILESAVER}}
+
+// ── Assets embebidos ───────────────────────────────────────────────────────
+const TPL = '{{TEMPLATE_B64}}';
+
+// Marcadores simples del nuevo template.docx
+const M_FECHA = '__LC4_FECHA__';
+const M_CUC   = '__LC4_CUC__';
+const M_EMP   = '__LC4_EMPRESA__';
+const M_REP   = '__LC4_REPRESENTANTES__';
+const M_FAC   = '__LC4_FACULTADES__';
+const M_OBS   = '__LC4_OBSERVACIONES__';
+
+// RPR base del template (Sura Sans sz=19, sin color explicito)
+const RPR_BASE  = `<w:rPr><w:rFonts w:ascii="Sura Sans" w:hAnsi="Sura Sans" w:cstheme="minorHAnsi"/><w:sz w:val="19"/></w:rPr>`;
+const PPR_LEFT  = `<w:pPr><w:jc w:val="left"/><w:rPr><w:rFonts w:ascii="Sura Sans" w:hAnsi="Sura Sans" w:cstheme="minorHAnsi"/></w:rPr></w:pPr>`;
+// La lista de guiones se registra en numbering.xml con un numId libre que se
+// calcula al generar. Nunca se fija a un numero concreto: una plantilla nueva
+// podria usarlo ya para una lista numerada. El numId viaja como parametro,
+// sin estado global que pueda quedar sin inicializar.
+
+// Sangria de los items de lista, en twips (567 twips = 1 cm).
+// 284 deja la vineta pegada al margen y el texto a medio centimetro.
+const LISTA_SANGRIA = 284;
+
+function pprList(numId) {
+  return `<w:pPr><w:numPr><w:ilvl w:val="0"/><w:numId w:val="${numId}"/></w:numPr>`
+       + `<w:ind w:left="${LISTA_SANGRIA}" w:hanging="${LISTA_SANGRIA}"/>`
+       + `<w:jc w:val="left"/><w:rPr><w:rFonts w:ascii="Sura Sans" w:hAnsi="Sura Sans" w:cstheme="minorHAnsi"/>`
+       + `<w:sz w:val="19"/></w:rPr></w:pPr>`;
+}
+
+
+// Registra en numbering.xml una lista con vineta de guion y devuelve su numId.
+function registrarListaGuion(numXml) {
+  const numIds = [...numXml.matchAll(/<w:num w:numId="(\d+)"/g)].map(m => +m[1]);
+  const absIds = [...numXml.matchAll(/w:abstractNumId="(\d+)"/g)].map(m => +m[1]);
+  const numId = (numIds.length ? Math.max(...numIds) : 0) + 1;
+  const absId = (absIds.length ? Math.max(...absIds) : 0) + 1;
+
+  // Los atributos w:nsid, w:tmpl y w:tplc son de tipo ST_LongHexNumber:
+  // exigen exactamente 8 digitos hexadecimales. Con un valor invalido Word
+  // descarta la definicion y aplica numeracion decimal (1. 2. 3.) en lugar
+  // del guion. Tampoco puede faltar <w:start>.
+  const abstract =
+      `<w:abstractNum w:abstractNumId="${absId}" w15:restartNumberingAfterBreak="0">`
+    + `<w:nsid w:val="4A2CCE16"/>`
+    + `<w:multiLevelType w:val="hybridMultilevel"/>`
+    + `<w:tmpl w:val="0A2CCE16"/>`
+    + `<w:lvl w:ilvl="0" w:tplc="280A0001">`
+    +   `<w:start w:val="1"/>`
+    +   `<w:numFmt w:val="bullet"/>`
+    +   `<w:lvlText w:val="-"/>`
+    +   `<w:lvlJc w:val="left"/>`
+    +   `<w:pPr><w:ind w:left="${LISTA_SANGRIA}" w:hanging="${LISTA_SANGRIA}"/></w:pPr>`
+    +   `<w:rPr><w:rFonts w:ascii="Sura Sans" w:hAnsi="Sura Sans" w:cstheme="minorHAnsi" w:hint="default"/></w:rPr>`
+    + `</w:lvl></w:abstractNum>`;
+  const num = `<w:num w:numId="${numId}"><w:abstractNumId w:val="${absId}"/></w:num>`;
+  return { numId, xml: numXml.replace('</w:numbering>', abstract + num + '</w:numbering>') };
+}
+
+
+// ── Cargos predefinidos ────────────────────────────────────────────────────
+const CARGOS = ['APODERADO', 'GERENTE GENERAL', 'REPRESENTANTE', 'TESORERO'];
+
+const ACCIONES_PLANTILLA = [
+  { label: 'Operaciones bancarias basicas',
+    value: 'Abrir, cerrar y administrar cuentas bancarias en moneda nacional y extranjera, imponiendo, retirando y transfiriendo fondos correspondientes en dichas cuentas.' },
+  { label: 'Contratos bancarios y financieros',
+    value: 'Celebrar contratos bancarios y financieros, incluyendo creditos, prestamos, avales, garantias y cartas de credito.' },
+  { label: 'Operaciones con valores',
+    value: 'Celebrar contratos de opciones, incluyendo compra y venta de acciones y bonos. Girar, aceptar, endosar, emitir y descontar pagares.' },
+  { label: 'Operaciones financieras complejas',
+    value: 'Realizar operaciones financieras complejas como leasing, factoring, underwriting, swaps y similares.' },
+  { label: 'Contratos de colaboracion',
+    value: 'Celebrar contratos de colaboracion empresarial y constituir sociedades.' },
+  { label: 'Facultades laborales',
+    value: 'Contratar, modificar y resolver contratos de trabajo, suscribir planillas y efectuar pagos al personal.' },
+  { label: 'Suscripcion de contratos generales',
+    value: 'Suscribir todo tipo de contratos en que intervenga la sociedad, asi como sus modificaciones, ampliaciones y aclaraciones.' },
+  { label: 'Transferencias electronicas',
+    value: 'Acordar la validez de las transferencias electronicas de fondos entre cuentas propias o a favor de terceros.' },
+];
+
+// ── Representantes dinamicos ───────────────────────────────────────────────
+let repCount = 0;
+let facMode = 'plantilla';
+
+function agregarRep() {
+  repCount++;
+  const id = repCount;
+  const container = document.getElementById('repsContainer');
+  const div = document.createElement('div');
+  div.className = 'rep-block';
+  div.id = `rep-${id}`;
+
+  const cargosOpts = CARGOS.map(c =>
+    `<option value="${c}">${c}</option>`
+  ).join('') + `<option value="__custom__">Otro (especificar)...</option>`;
+
+  div.innerHTML = `
+    <div class="rep-num">Representante</div>
+    ${id > 1 ? `<button class="btn-remove-rep" onclick="eliminarRep(${id})" title="Eliminar">&times;</button>` : ''}
+    <div class="frow" style="margin-bottom:10px">
+      <div class="field" style="margin-bottom:0">
+        <label>Apellidos y nombres <span class="req">*</span></label>
+        <input type="text" id="nombre-${id}" placeholder="Apellidos y nombres" oninput="syncBloquesFirmantes()">
+      </div>
+      <div class="field" style="margin-bottom:0">
+        <label>Cargo <span class="req">*</span></label>
+        <select id="cargo-select-${id}" onchange="onCargoChange(${id})">
+          ${cargosOpts}
+        </select>
+      </div>
+    </div>
+    <div class="field" id="cargo-custom-wrap-${id}" style="display:none;margin-bottom:10px">
+      <label>Especificar cargo</label>
+      <input type="text" id="cargo-custom-${id}" placeholder="Cargo personalizado" oninput="syncBloquesFirmantes()">
+    </div>
+    <div class="field" style="margin-bottom:6px">
+      <label>Clase / Tipo <span style="font-size:10px;color:#98A3AE;font-weight:400">(opcional)</span></label>
+      <input type="text" id="clase-${id}" placeholder="Ej: Clase A" oninput="syncBloquesFirmantes()">
+    </div>`;
+
+  container.appendChild(div);
+  renumerarReps();
+  syncBloquesFirmantes();
+}
+
+function eliminarRep(id) {
+  const el = document.getElementById(`rep-${id}`);
+  if (el) el.remove();
+  renumerarReps();
+  syncBloquesFirmantes();
+}
+
+function renumerarReps() {
+  const blocks = document.querySelectorAll('.rep-block');
+  blocks.forEach((b, i) => {
+    const numEl = b.querySelector('.rep-num');
+    if (numEl) numEl.textContent = blocks.length === 1 ? 'Representante' : `Representante ${i + 1}`;
+    const btnR = b.querySelector('.btn-remove-rep');
+    if (btnR) btnR.style.display = blocks.length === 1 ? 'none' : '';
+  });
+}
+
+function onCargoChange(id) {
+  const sel = document.getElementById(`cargo-select-${id}`);
+  const wrap = document.getElementById(`cargo-custom-wrap-${id}`);
+  wrap.style.display = sel.value === '__custom__' ? 'block' : 'none';
+  syncBloquesFirmantes();
+}
+
+function getCargoLabel(id) {
+  const sel = document.getElementById(`cargo-select-${id}`);
+  if (!sel) return '';
+  if (sel.value === '__custom__') {
+    return (document.getElementById(`cargo-custom-${id}`)?.value || '').trim();
+  }
+  return sel.value;
+}
+
+function getClaseLabel(id) {
+  return (document.getElementById(`clase-${id}`)?.value || '').trim();
+}
+
+// ── Toggle plantilla / manual ─────────────────────────────────────────────
+function setFacMode(mode) {
+  facMode = mode;
+  const fw = document.getElementById('formatoWrap');
+  if (fw) fw.style.display = mode === 'plantilla' ? '' : 'none';
+  document.getElementById('panelPlantilla').classList.toggle('active', mode === 'plantilla');
+  document.getElementById('panelManual').classList.toggle('active', mode === 'manual');
+  document.getElementById('btnModoPlantilla').classList.toggle('active', mode === 'plantilla');
+  document.getElementById('btnModoManual').classList.toggle('active', mode === 'manual');
+}
+
+// ── Bloques de actuacion ──────────────────────────────────────────────────
+let bloqueCount = 0;
+
+// Obtener lista de representantes activos con su etiqueta
+function getRepsActivos() {
+  const blocks = document.querySelectorAll('.rep-block');
+  return Array.from(blocks).map((b, i) => {
+    const id    = b.id.replace('rep-', '');
+    const nombre = (document.getElementById(`nombre-${id}`) || {}).value?.trim() || '';
+    const cargo  = getCargoLabel(id);
+    const clase  = getClaseLabel(id);
+    // Etiqueta del chip: cargo + clase; si hay varios reps con el mismo cargo,
+    // agregar el apellido para distinguirlos
+    const base   = [cargo, clase].filter(Boolean).join(' ') || `Representante ${i+1}`;
+    const apellido = nombre ? nombre.split(' ')[0] : '';
+    return { id, nombre, cargo, clase, label: base, apellido };
+  });
+}
+
+// Etiqueta de chip: agrega apellido cuando varios reps comparten cargo+clase
+function chipLabel(r, allReps) {
+  const dup = allReps.filter(x => x.label === r.label).length > 1;
+  return dup && r.apellido ? `${r.label} (${r.apellido})` : r.label;
+}
+
+function agregarBloque() {
+  bloqueCount++;
+  const bid  = bloqueCount;
+  const reps = getRepsActivos();
+  const container = document.getElementById('bloquesContainer');
+  const div = document.createElement('div');
+  div.className = 'bloque-act';
+  div.id = `bloque-${bid}`;
+
+  const firmantesHtml = reps.length
+    ? reps.map(r =>
+        `<label class="firmante-chip" id="chip-${bid}-${r.id}">
+          <input type="checkbox" id="fchk-${bid}-${r.id}" onchange="onBloqueChange(${bid})">
+          <span>${chipLabel(r, reps)}</span>
+        </label>`
+      ).join('')
+    : `<span style="font-size:12px;color:#98A3AE">Agrega representantes arriba primero.</span>`;
+
+  const checksHtml = ACCIONES_PLANTILLA.map((a, idx) =>
+    `<label class="fac-check-item">
+      <input type="checkbox" id="bchk-${bid}-${idx}" onchange="onFacCheckChange(${bid})">
+      <span>${a.label}</span>
+    </label>`
+  ).join('');
+
+  div.innerHTML = `
+    <div class="bloque-act-header">
+      <span>Bloque ${bid}</span>
+      <button class="btn-remove-bloque" onclick="eliminarBloque(${bid})" title="Eliminar bloque">&times;</button>
+    </div>
+    <div class="bloque-act-body">
+
+      <div style="margin-bottom:10px">
+        <div class="field" style="margin-bottom:6px"><label style="margin-bottom:6px">Firmantes de este bloque</label>
+          <div class="firmantes-grid" id="firmantes-grid-${bid}">${firmantesHtml}</div>
+        </div>
+      </div>
+
+      <div style="margin-bottom:10px">
+        <span class="modo-label">Modalidad <span class="req">*</span></span>
+        <div class="modo-chips">
+          <input class="modo-chip" type="radio" name="bmodo-${bid}" id="bmodo-sola-${bid}" value="sola" checked onchange="onBloqueChange(${bid})">
+          <label for="bmodo-sola-${bid}">A sola firma</label>
+          <input class="modo-chip" type="radio" name="bmodo-${bid}" id="bmodo-manco-${bid}" value="mancomunada" onchange="onBloqueChange(${bid})">
+          <label for="bmodo-manco-${bid}">Mancomunada</label>
+          <input class="modo-chip" type="radio" name="bmodo-${bid}" id="bmodo-grupos-${bid}" value="grupos" onchange="onBloqueChange(${bid})">
+          <label for="bmodo-grupos-${bid}">Por grupos</label>
+          <input class="modo-chip" type="radio" name="bmodo-${bid}" id="bmodo-libre-${bid}" value="libre" onchange="onBloqueChange(${bid})">
+          <label for="bmodo-libre-${bid}">Combinacion libre</label>
+        </div>
+
+        <!-- Grupos (visible solo cuando modalidad=grupos) -->
+        <div id="grupos-panel-${bid}" style="display:none;margin-top:8px;border:1.5px solid #e0e0e0;padding:10px">
+          <div style="font-size:11px;color:#59646E;margin-bottom:8px">Asigna cada firmante seleccionado a un grupo. Basta la firma de uno por grupo.</div>
+          <div id="grupos-rows-${bid}"></div>
+        </div>
+
+        <!-- Combinacion libre -->
+        <div id="bcombo-field-${bid}" style="display:none;margin-top:8px">
+          <input type="text" id="bcombo-text-${bid}" placeholder="Ej: conjuntamente con el Gerente General o con un Apoderado Clase A" oninput="onBloqueChange(${bid})" style="width:100%;border:1.5px solid #d0d0d0;padding:9px 12px;font-size:13.5px;font-family:'Sura Sans',Arial,sans-serif;color:#161618;background:#fafafa;outline:none">
+        </div>
+      </div>
+
+      <div style="margin-bottom:8px">
+        <div style="font-size:11px;font-weight:600;color:#24272A;margin-bottom:5px">Facultades <span style="font-weight:400;color:#59646E">(marcar las que apliquen o escribir libremente)</span></div>
+        <div class="fac-checks" id="fachecks-${bid}">${checksHtml}</div>
+        <div class="field" style="margin-bottom:0">
+          <textarea id="bfac-text-${bid}" class="autoresize" style="min-height:80px;line-height:1.5" placeholder="El texto se construye al marcar opciones, o escribe directamente..." oninput="onFacTextInput(${bid}, this)"></textarea>
+        </div>
+      </div>
+    </div>`;
+
+  container.appendChild(div);
+  renumerarBloques();
+  onBloqueChange(bid);
+  updatePreview();
+}
+
+function eliminarBloque(bid) {
+  const el = document.getElementById(`bloque-${bid}`);
+  if (el) el.remove();
+  renumerarBloques();
+  updatePreview();
+}
+
+function renumerarBloques() {
+  const bloques = document.querySelectorAll('.bloque-act');
+  bloques.forEach((b, i) => {
+    const span = b.querySelector('.bloque-act-header span');
+    if (span) span.textContent = `Bloque ${i + 1}`;
+  });
+}
+
+function getBloqueMode(bid) {
+  return document.querySelector(`input[name="bmodo-${bid}"]:checked`)?.value || 'sola';
+}
+
+function getFirmantesSeleccionados(bid) {
+  const reps = getRepsActivos();
+  return reps.filter(r => {
+    const chk = document.getElementById(`fchk-${bid}-${r.id}`);
+    return chk && chk.checked;
+  });
+}
+
+function onBloqueChange(bid) {
+  const modo = getBloqueMode(bid);
+
+  // Mostrar/ocultar paneles de modalidad
+  const gruposPanel = document.getElementById(`grupos-panel-${bid}`);
+  const comboField  = document.getElementById(`bcombo-field-${bid}`);
+  if (gruposPanel) gruposPanel.style.display = modo === 'grupos' ? 'block' : 'none';
+  if (comboField)  comboField.style.display  = modo === 'libre'  ? 'block' : 'none';
+
+  // Actualizar grupos-rows cuando modalidad=grupos
+  if (modo === 'grupos') {
+    rebuildGrupos(bid);
+  }
+
+  // Actualizar chips de firmantes (estilo visual)
+  getRepsActivos().forEach(r => {
+    const chip = document.getElementById(`chip-${bid}-${r.id}`);
+    const chk  = document.getElementById(`fchk-${bid}-${r.id}`);
+    if (chip) chip.classList.toggle('sel', chk && chk.checked);
+  });
+
+  updatePreview();
+}
+
+// Solo los checkboxes de facultades reconstruyen el textarea
+// Cambios al escribir en el textarea. Solo refresca altura y preview:
+// nunca reescribe lo que el usuario esta tecleando.
+function onFacTextInput(bid, el) {
+  autoResize(el);
+  updatePreview();
+}
+
+function onFacCheckChange(bid) {
+  const checked = [];
+  ACCIONES_PLANTILLA.forEach((a, idx) => {
+    const chk = document.getElementById(`bchk-${bid}-${idx}`);
+    if (chk && chk.checked) checked.push(a.value);
+  });
+  const ta = document.getElementById(`bfac-text-${bid}`);
+  if (ta) {
+    ta.value = checked.map(v => '- ' + v).join('\n');
+    autoResize(ta);
+  }
+  updatePreview();
+}
+
+function rebuildGrupos(bid) {
+  const selFirmantes = getFirmantesSeleccionados(bid);
+  const container    = document.getElementById(`grupos-rows-${bid}`);
+  if (!container) return;
+
+  // Preservar asignaciones existentes
+  const existing = {};
+  container.querySelectorAll('[data-rep-id]').forEach(el => {
+    existing[el.dataset.repId] = el.querySelector(`input[type=radio]:checked`)?.value || '1';
+  });
+
+  if (selFirmantes.length === 0) {
+    container.innerHTML = '<div style="font-size:11px;color:#98A3AE">Selecciona firmantes arriba primero.</div>';
+    return;
+  }
+
+  container.innerHTML = selFirmantes.map(r => {
+    const cur = existing[r.id] || '1';
+    const radios = ['1','2','3'].map(g =>
+      `<label class="grupo-chip ${cur===g?'sel':''}" id="gchip-${bid}-${r.id}-${g}">
+        <input type="radio" name="grupo-${bid}-${r.id}" value="${g}" ${cur===g?'checked':''} onchange="onGrupoChange(${bid},'${r.id}')">
+        Grupo ${g}
+      </label>`
+    ).join('');
+    return `<div class="grupo-row" data-rep-id="${r.id}">
+      <span class="grupo-label">${r.label || r.nombre}</span>
+      <div class="grupo-chips">${radios}</div>
+    </div>`;
+  }).join('');
+}
+
+function onGrupoChange(bid, repId) {
+  // Actualizar estilos de los chips de grupo
+  ['1','2','3'].forEach(g => {
+    const chip = document.getElementById(`gchip-${bid}-${repId}-${g}`);
+    const radio = chip?.querySelector('input');
+    if (chip) chip.classList.toggle('sel', radio?.checked);
+  });
+  updatePreview();
+}
+
+// ── Redaccion ─────────────────────────────────────────────────────────────
+
+// Enumera en castellano: "A", "A y B", "A, B y C".
+// Aplica las reglas y->e (antes de i-/hi-) y o->u (antes de o-/ho-).
+function enumerar(items, conj) {
+  const lista = items.filter(Boolean);
+  if (lista.length === 0) return '';
+  if (lista.length === 1) return lista[0];
+  const ultimo = lista[lista.length - 1];
+  const previos = lista.slice(0, -1).join(', ');
+  return `${previos} ${conjuncion(conj, ultimo)} ${ultimo}`;
+}
+
+// "y" pasa a "e" ante palabra que empieza por i- o hi- (salvo hie-).
+// "o" pasa a "u" ante palabra que empieza por o- u ho-.
+// La regla depende de la PRIMERA palabra que sigue, tal cual aparece: si hay
+// articulo ("el/la INTERVENTOR"), manda el articulo y la conjuncion no cambia.
+function conjuncion(conj, siguiente) {
+  const palabra = String(siguiente).trim().toLowerCase();
+  if (conj === 'y' && /^(i|hi)/.test(palabra) && !/^hie/.test(palabra)) return 'e';
+  if (conj === 'o' && /^(o|ho)/.test(palabra)) return 'u';
+  return conj;
+}
+
+// Como se nombra a un firmante en el texto del documento: por su cargo, con la
+// clase si la tiene. Es la forma habitual en los LC4, porque la facultad
+// corresponde al cargo y no a la persona; el nombre de cada representante ya
+// figura en la fila superior del documento.
+function firmanteTexto(r) {
+  const cargo  = [r.cargo, r.clase].filter(Boolean).join(' ').trim();
+  const nombre = (r.nombre || '').trim();
+  const modo   = document.getElementById('formatoFirmante')?.value || 'cargo';
+
+  // Nombre solo: los nombres propios no llevan articulo
+  if (modo === 'nombre') {
+    return nombre || (cargo ? `el/la ${cargo}` : 'el/la representante');
+  }
+  // Cargo y nombre: el nombre va entre parentesis tras el cargo
+  if (modo === 'ambos') {
+    if (cargo && nombre) return `el/la ${cargo} (${nombre})`;
+    return nombre || (cargo ? `el/la ${cargo}` : 'el/la representante');
+  }
+  // Por defecto: solo el cargo
+  return cargo ? `el/la ${cargo}` : (nombre || 'el/la representante');
+}
+
+
+// Construir el texto de intro de un bloque para la preview y el XML
+function buildBloqueIntro(bid) {
+  const modo      = getBloqueMode(bid);
+  const firmantes = getFirmantesSeleccionados(bid);
+  if (firmantes.length === 0) return '';
+
+  const F = firmantes.map(firmanteTexto);
+
+  if (modo === 'sola') {
+    const verbo = F.length > 1 ? 'pueden' : 'puede';
+    return `En forma individual, ${enumerar(F, 'y')} ${verbo} realizar las siguientes acciones:`;
+  }
+
+  if (modo === 'mancomunada') {
+    if (F.length === 1) {
+      return `En forma mancomunada, ${F[0]} puede realizar las siguientes acciones:`;
+    }
+    return `En forma mancomunada, ${F[0]} conjuntamente con ${enumerar(F.slice(1), 'y')} `
+         + `pueden realizar las siguientes acciones:`;
+  }
+
+  if (modo === 'grupos') {
+    const grupos = {};
+    firmantes.forEach(r => {
+      const g = document.querySelector(`input[name="grupo-${bid}-${r.id}"]:checked`)?.value || '1';
+      (grupos[g] = grupos[g] || []).push(firmanteTexto(r));
+    });
+    const gKeys = Object.keys(grupos).sort();
+    if (gKeys.length === 0) return '';
+    if (gKeys.length < 2) {
+      const miembros = grupos[gKeys[0]];
+      const verbo = miembros.length > 1 ? 'pueden' : 'puede';
+      return `Indistintamente ${enumerar(miembros, 'o')} ${verbo} realizar las siguientes acciones:`;
+    }
+    const partes = gKeys.map(g =>
+      `cualquier miembro del Grupo ${g} (${enumerar(grupos[g], 'o')})`);
+    return `Conjuntamente ${enumerar(partes, 'y')} pueden realizar las siguientes acciones:`;
+  }
+
+  // combinacion libre
+  const texto = (document.getElementById(`bcombo-text-${bid}`) || {}).value?.trim() || '';
+  const verbo = F.length > 1 ? 'pueden' : 'puede';
+  const sujeto = enumerar(F, 'y');
+  return `${sujeto.charAt(0).toUpperCase() + sujeto.slice(1)}`
+       + `${texto ? ', ' + texto + ',' : ''} ${verbo} realizar las siguientes acciones:`;
+}
+
+function getBloqueTexto(bid) {
+  return (document.getElementById(`bfac-text-${bid}`) || {}).value?.trim() || '';
+}
+
+// Preview en tiempo real
+// FUENTE UNICA DE VERDAD del contenido de un bloque.
+// La vista previa y el documento la usan por igual: no pueden divergir.
+// Devuelve [{ text, isList }] listo para renderizar.
+function parseBloque(bid) {
+  const out = [];
+  const intro = buildBloqueIntro(bid);
+  if (intro) {
+    intro.split('\n').forEach(l => {
+      if (l.trim()) out.push({ text: l.trim(), isList: false });
+    });
+  }
+  const texto = getBloqueTexto(bid);
+  if (texto) {
+    texto.split('\n').forEach(raw => {
+      const line = raw.trim();
+      if (!line) return;
+      const isList = line.startsWith('- ');
+      const text   = isList ? line.slice(2).trim() : line;
+      if (text) out.push({ text, isList });
+    });
+  }
+  return out;
+}
+
+function updatePreview() {
+  const bloques = document.querySelectorAll('.bloque-act');
+  const preview = document.getElementById('previewBox');
+  if (!preview) return;
+
+  if (bloques.length === 0) {
+    preview.innerHTML = '<em>El texto generado aparecera aqui conforme completes los bloques...</em>';
+    return;
+  }
+
+  const parts = Array.from(bloques).map((b, i) => {
+    const bid   = b.id.replace('bloque-', '');
+    const lineas = parseBloque(bid);
+    if (lineas.length === 0) return `[Bloque ${i + 1}: sin datos aun]`;
+    // Se muestra exactamente como saldra en el documento
+    return lineas.map(l => (l.isList ? '   -  ' : '') + l.text).join('\n');
+  });
+
+  preview.textContent = parts.join('\n\n');
+}
+
+// Reconstruir firmantes-grid cuando cambian los representantes
+function syncBloquesFirmantes() {
+  const reps = getRepsActivos();
+  document.querySelectorAll('.bloque-act').forEach(b => {
+    const bid  = b.id.replace('bloque-', '');
+    const grid = document.getElementById(`firmantes-grid-${bid}`);
+    if (!grid) return;
+    // Preservar estado de checks
+    const prevChecked = {};
+    reps.forEach(r => {
+      const chk = document.getElementById(`fchk-${bid}-${r.id}`);
+      if (chk) prevChecked[r.id] = chk.checked;
+    });
+    grid.innerHTML = reps.length
+      ? reps.map(r =>
+          `<label class="firmante-chip${prevChecked[r.id] ? ' sel' : ''}" id="chip-${bid}-${r.id}">
+            <input type="checkbox" id="fchk-${bid}-${r.id}" ${prevChecked[r.id]?'checked':''} onchange="onBloqueChange(${bid})">
+            <span>${chipLabel(r, reps)}</span>
+          </label>`
+        ).join('')
+      : `<span style="font-size:12px;color:#98A3AE">Agrega representantes arriba primero.</span>`;
+    // Si el bloque esta en modalidad grupos, reconstruir la asignacion
+    if (getBloqueMode(bid) === 'grupos') rebuildGrupos(bid);
+  });
+  updatePreview();
+}
+
+// Construir XML de todos los bloques para el documento
+function buildFacXml(numId) {
+  if (!Number.isInteger(numId)) throw new Error('buildFacXml requiere un numId valido');
+  const bloques = document.querySelectorAll('.bloque-act');
+  if (bloques.length === 0) return [];
+
+  const mkPara = (text, isList) => {
+    const ppr = isList ? pprList(numId) : PPR_LEFT;
+    return `<w:p>${ppr}<w:r>${RPR_BASE}<w:t xml:space="preserve">${X(text)}</w:t></w:r></w:p>`;
+  };
+
+  let paras = [];
+  bloques.forEach((b, i) => {
+    const bid = b.id.replace('bloque-', '');
+    parseBloque(bid).forEach(l => paras.push(mkPara(l.text, l.isList)));
+    // Separador entre bloques (excepto tras el ultimo)
+    if (i < bloques.length - 1) paras.push(`<w:p>${PPR_LEFT}</w:p>`);
+  });
+
+  return paras;
+}
+
+// ── Escape XML ──────────────────────────────────────────────────────
+// Todo texto que entre al XML del documento debe pasar por aqui.
+function X(s) {
+  return String(s)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&apos;');
+}
+
+// ── Helpers de documento ────────────────────────────────────────────
+
+// Reemplazo literal: evita que $&, $', $` o $1 en el valor se interpreten
+// como patrones especiales de String.replace (corromperia el XML).
+function replaceLiteral(text, marker, value) {
+  const i = text.indexOf(marker);
+  if (i < 0) throw new Error(`Marcador no encontrado en la plantilla: ${marker}`);
+  return text.slice(0, i) + value + text.slice(i + marker.length);
+}
+
+// Reemplaza el parrafo <w:p> completo que contiene el marcador por los
+// parrafos generados. Si no hay parrafos, inserta uno vacio: una celda
+// <w:tc> sin <w:p> es XML invalido y Word rechaza el archivo.
+function replaceParagraph(xml, marker, paras) {
+  const iMark = xml.indexOf(marker);
+  if (iMark < 0) throw new Error(`Marcador no encontrado en la plantilla: ${marker}`);
+  const pStart = xml.lastIndexOf('<w:p ', iMark);
+  const pEnd   = xml.indexOf('</w:p>', iMark);
+  if (pStart < 0 || pEnd < 0) throw new Error(`Parrafo del marcador ${marker} mal formado`);
+  const contenido = (paras && paras.length)
+    ? paras.join('')
+    : `<w:p>${PPR_LEFT}</w:p>`;
+  return xml.slice(0, pStart) + contenido + xml.slice(pEnd + 6);
+}
+
+// Windows no admite \ / : * ? " < > | en nombres de archivo.
+function nombreSeguro(s) {
+  return s.replace(/[\\/:*?"<>|]/g, '-').replace(/\s+/g, ' ').trim().slice(0, 120) || 'documento';
+}
+
+function isoToDoc(iso) {
+  const [y, m, d] = iso.split('-');
+  return `${d}/${m}/${y}`;
+}
+
+// Construir lineas de representantes: "APELLIDOS NOMBRES - CARGO - CLASE"
+function buildRepsXml(reps) {
+  return reps.map(r => {
+    const parts = [r.nombre.trim().toUpperCase()];
+    if (r.cargo) parts.push(r.cargo.trim().toUpperCase());
+    if (r.clase) parts.push(r.clase.trim().toUpperCase());
+    return X(parts.join(' - '));
+  });
+}
+
+// ── Validacion ─────────────────────────────────────────────────────────────
+function markErr(id, hasErr) {
+  const el = document.getElementById(id);
+  if (el) el.classList.toggle('err', hasErr);
+}
+
+// ── Validacion del XML antes de descargar ─────────────────────────────────
+// Detecta en el navegador los errores que harian que Word rechace el archivo,
+// en vez de entregar un .docx corrupto que falla al abrirse.
+function validarXml(xml, numXml) {
+  const p = [];
+
+  // 1. Etiquetas balanceadas.
+  //    Se recorre el XML una sola vez extrayendo el nombre real de cada
+  //    etiqueta. No sirve buscar "<w:r" como patron porque tambien casaria
+  //    con <w:rFonts/>, <w:rPr>, etc. (comparten prefijo).
+  const abiertas = {}, cerradas = {};
+  const reTag = /<(\/?)(w:[A-Za-z0-9]+)(?=[\s\/>])([^>]*?)(\/?)>/g;
+  let mt;
+  while ((mt = reTag.exec(xml)) !== null) {
+    const esCierre = mt[1] === '/';
+    const nombre   = mt[2];
+    const esAuto   = mt[4] === '/';
+    if (esCierre)     cerradas[nombre] = (cerradas[nombre] || 0) + 1;
+    else if (!esAuto) abiertas[nombre] = (abiertas[nombre] || 0) + 1;
+  }
+  ['w:p', 'w:r', 'w:t', 'w:tc', 'w:tr', 'w:tbl'].forEach(tag => {
+    const a = abiertas[tag] || 0, c = cerradas[tag] || 0;
+    if (a !== c) p.push(`<${tag}> descompensado (${a} abiertas / ${c} cerradas)`);
+  });
+
+  // 2. Ninguna celda sin parrafo (Word rechaza el archivo)
+  (xml.match(/<w:tc>[\s\S]*?<\/w:tc>/g) || []).forEach(tc => {
+    if (!tc.includes('<w:p')) p.push('hay una celda de tabla sin parrafo');
+  });
+
+  // 3. Marcadores sin reemplazar
+  [M_FECHA, M_CUC, M_EMP, M_REP, M_FAC, M_OBS].forEach(m => {
+    if (xml.includes(m)) p.push(`quedo el marcador ${m} sin reemplazar`);
+  });
+
+  // 4. Toda lista usada debe estar definida en numbering.xml
+  new Set([...xml.matchAll(/w:numId w:val="(\d+)"/g)].map(m => m[1])).forEach(id => {
+    if (!numXml.includes(`<w:num w:numId="${id}"`)) p.push(`la lista numId=${id} no esta definida`);
+  });
+
+  // 5. Valores basura por variables sin inicializar
+  if (/w:val="(null|undefined|NaN)"/.test(xml)) p.push('hay un atributo con valor null/undefined');
+
+  // 6. Ampersands sin escapar (causa tipica de docx corrupto)
+  const amp = xml.match(/&(?!amp;|lt;|gt;|quot;|apos;|#\d+;|#x[0-9A-Fa-f]+;)/g);
+  if (amp) p.push(`${amp.length} ampersand(s) sin escapar`);
+
+  return [...new Set(p)];
+}
+
+// ── Consola de diagnostico ────────────────────────────────────────────────
+// Disponible como  LC4  en la consola del navegador (F12).
+const LC4 = {
+  // Estado legible del formulario
+  estado() {
+    const reps = getRepsActivos().map(r => ({
+      id: r.id, nombre: r.nombre || '(vacio)', cargo: r.cargo || '(vacio)',
+      clase: r.clase || '-', etiqueta: r.label
+    }));
+    const bloques = [...document.querySelectorAll('.bloque-act')].map(b => {
+      const bid = b.id.replace('bloque-', '');
+      return {
+        id: bid,
+        modalidad: getBloqueMode(bid),
+        firmantes: getFirmantesSeleccionados(bid).map(f => f.label),
+        lineas: parseBloque(bid).map(l => (l.isList ? '- ' : '') + l.text)
+      };
+    });
+    console.group('%c[LC4] Estado del formulario', 'font-weight:bold');
+    console.log('Modo facultades:', facMode);
+    console.log('Datos generales:', {
+      fecha: document.getElementById('fecha').value,
+      cuc: document.getElementById('cuc').value || '(vacio)',
+      empresa: document.getElementById('empresa').value || '(vacio)',
+      observaciones: document.getElementById('observaciones').value || '(vacio)'
+    });
+    console.log('Representantes:'); console.table(reps);
+    bloques.forEach(b => {
+      console.group(`Bloque ${b.id} — ${b.modalidad}`);
+      console.log('Firmantes:', b.firmantes.length ? b.firmantes.join(' + ') : '(ninguno)');
+      console.log('Lineas que se escribiran:'); b.lineas.forEach(l => console.log('   ' + l));
+      console.groupEnd();
+    });
+    console.groupEnd();
+    return { reps, bloques, facMode };
+  },
+
+  // Revisa el formulario y avisa de lo que impediria generar
+  diagnostico() {
+    const avisos = [];
+    const err = [];
+    if (!document.getElementById('fecha').value)   err.push('Falta la fecha');
+    if (!document.getElementById('empresa').value.trim()) err.push('Falta la razon social');
+    getRepsActivos().forEach((r, i) => {
+      if (!r.nombre) err.push(`Representante ${i + 1}: falta el nombre`);
+      if (!r.cargo)  err.push(`Representante ${i + 1}: falta el cargo`);
+    });
+    if (facMode === 'plantilla') {
+      const bloques = [...document.querySelectorAll('.bloque-act')];
+      if (!bloques.length) err.push('No hay ningun bloque de actuacion');
+      bloques.forEach((b, i) => {
+        const bid = b.id.replace('bloque-', '');
+        if (!getFirmantesSeleccionados(bid).length) err.push(`Bloque ${i + 1}: sin firmantes seleccionados`);
+        if (!getBloqueTexto(bid)) err.push(`Bloque ${i + 1}: sin facultades`);
+        if (getBloqueMode(bid) === 'grupos') {
+          const g = new Set(getFirmantesSeleccionados(bid).map(f =>
+            (document.querySelector(`input[name="grupo-${bid}-${f.id}"]:checked`) || {}).value || '1'));
+          if (g.size < 2) avisos.push(`Bloque ${i + 1}: modalidad por grupos con un solo grupo (equivale a "o")`);
+        }
+      });
+    } else if (!document.getElementById('facManual').value.trim()) {
+      err.push('Modo manual: el texto esta vacio');
+    }
+    console.group('%c[LC4] Diagnostico', 'font-weight:bold');
+    if (!err.length) console.log('%cSin problemas: el formulario puede generar el documento.', 'color:#0a7d32');
+    else { console.log('%cImpiden generar:', 'color:#cc2200;font-weight:bold'); err.forEach(e => console.log('  - ' + e)); }
+    if (avisos.length) { console.log('%cAvisos:', 'color:#b07500;font-weight:bold'); avisos.forEach(a => console.log('  - ' + a)); }
+    console.groupEnd();
+    return { errores: err, avisos };
+  },
+
+  // Genera el XML sin descargar nada y lo valida. Util para inspeccionar.
+  async verXml() {
+    const bin = atob(TPL), buf = new Uint8Array(bin.length);
+    for (let i = 0; i < bin.length; i++) buf[i] = bin.charCodeAt(i);
+    const zip = await JSZip.loadAsync(buf.buffer);
+    const { numId, xml: numNuevo } = registrarListaGuion(
+      await zip.file('word/numbering.xml').async('string'));
+    let xml = await zip.file('word/document.xml').async('string');
+    const emp = document.getElementById('empresa').value.trim();
+    xml = replaceLiteral(xml, M_FECHA, X(isoToDoc(document.getElementById('fecha').value || '2000-01-01')));
+    xml = replaceLiteral(xml, M_CUC, X(document.getElementById('cuc').value.trim()));
+    xml = replaceLiteral(xml, M_EMP, X(emp));
+    const reps = [...document.querySelectorAll('.rep-block')].map(b => {
+      const id = b.id.replace('rep-', '');
+      return { nombre: (document.getElementById(`nombre-${id}`) || {}).value || '',
+               cargo: getCargoLabel(id), clase: getClaseLabel(id) };
+    });
+    xml = replaceParagraph(xml, M_REP, buildRepsXml(reps).map(l =>
+      `<w:p>${PPR_LEFT}<w:r>${RPR_BASE}<w:t xml:space="preserve">${l}</w:t></w:r></w:p>`));
+    xml = replaceParagraph(xml, M_FAC, buildFacXml(numId));
+    xml = replaceParagraph(xml, M_OBS, []);
+    const problemas = validarXml(xml, numNuevo);
+    console.group('%c[LC4] XML generado', 'font-weight:bold');
+    console.log('Tamano:', xml.length.toLocaleString(), 'caracteres | numId de lista:', numId);
+    if (problemas.length) { console.log('%cProblemas:', 'color:#cc2200'); problemas.forEach(p => console.log('  - ' + p)); }
+    else console.log('%cXML valido.', 'color:#0a7d32');
+    console.groupEnd();
+    return { xml, numId, problemas };
+  },
+
+  ayuda() {
+    console.group('%c[LC4] Comandos de diagnostico', 'font-weight:bold');
+    console.log('LC4.estado()       Muestra representantes, bloques y el texto que se escribira');
+    console.log('LC4.diagnostico()  Indica que falta para poder generar el documento');
+    console.log('LC4.verXml()       Genera el XML sin descargar y lo valida');
+    console.log('LC4.ayuda()        Esta lista');
+    console.groupEnd();
+  }
+};
+window.LC4 = LC4;
+
+// ── Generador principal ────────────────────────────────────────────────────
+async function generarDocumento() {
+  const fecha = document.getElementById('fecha').value;
+  const cuc   = document.getElementById('cuc').value.trim();
+  const emp   = document.getElementById('empresa').value.trim();
+  const obs   = document.getElementById('observaciones').value.trim();
+
+  const blocks = document.querySelectorAll('.rep-block');
+  const reps = Array.from(blocks).map(b => {
+    const id = b.id.replace('rep-', '');
+    return {
+      _id:    id,
+      nombre: (document.getElementById(`nombre-${id}`) || {}).value?.trim() || '',
+      cargo:  getCargoLabel(id),
+      clase:  getClaseLabel(id),
+    };
+  });
+
+  // Validacion
+  let hasErr = false;
+  markErr('fecha',   !fecha); if (!fecha) hasErr = true;
+  markErr('empresa', !emp);   if (!emp)   hasErr = true;
+  reps.forEach(r => {
+    markErr(`nombre-${r._id}`, !r.nombre); if (!r.nombre) hasErr = true;
+    markErr(`cargo-select-${r._id}`, !r.cargo); if (!r.cargo) hasErr = true;
+  });
+
+  if (facMode === 'plantilla') {
+    const bloques = Array.from(document.querySelectorAll('.bloque-act'));
+    if (bloques.length === 0) {
+      toast('err', 'Agrega al menos un bloque de actuacion en el detalle de firmantes.');
+      return;
+    }
+    for (let i = 0; i < bloques.length; i++) {
+      const bid = bloques[i].id.replace('bloque-', '');
+      if (getFirmantesSeleccionados(bid).length === 0) {
+        toast('err', `Selecciona al menos un firmante en el bloque ${i + 1}.`);
+        return;
+      }
+      if (!getBloqueTexto(bid)) {
+        toast('err', `Ingresa las facultades del bloque ${i + 1}.`);
+        return;
+      }
+    }
+  } else {
+    const manual = document.getElementById('facManual').value.trim();
+    markErr('facManual', !manual);
+    if (!manual) { hasErr = true; }
+  }
+
+  if (hasErr) {
+    toast('err', 'Completa todos los campos obligatorios antes de generar.');
+    return;
+  }
+
+  const btn = document.getElementById('btnGen');
+  btn.disabled = true;
+  btn.innerHTML = '<svg viewBox="0 0 24 24" style="animation:spin 1s linear infinite;fill:white;width:16px;height:16px"><path d="M12 4V1L8 5l4 4V6c3.31 0 6 2.69 6 6s-2.69 6-6 6-6-2.69-6-6H4c0 4.42 3.58 8 8 8s8-3.58 8-8-3.58-8-8-8z"/></svg> GENERANDO...';
+
+  let etapa = 'inicio';
+  try {
+    etapa = 'decodificar la plantilla embebida';
+    const bin = atob(TPL);
+    const buf = new Uint8Array(bin.length);
+    for (let i = 0; i < bin.length; i++) buf[i] = bin.charCodeAt(i);
+
+    etapa = 'abrir el .docx';
+    const zip = await JSZip.loadAsync(buf.buffer);
+
+    // Registrar la lista de guiones con un numId libre de esta plantilla
+    etapa = 'registrar la lista de guiones';
+    const numFile = zip.file('word/numbering.xml');
+    if (!numFile) throw new Error('La plantilla no tiene numbering.xml (listas no disponibles)');
+    const { numId, xml: numXmlNuevo } = registrarListaGuion(await numFile.async('string'));
+    zip.file('word/numbering.xml', numXmlNuevo);
+
+    etapa = 'leer document.xml';
+    let xml = await zip.file('word/document.xml').async('string');
+
+    etapa = 'reemplazar los campos';
+    // 1. FECHA — reemplazo literal dentro del run existente
+    xml = replaceLiteral(xml, M_FECHA, X(isoToDoc(fecha)));
+
+    // 2. CUC (opcional: queda vacio si no se ingresa)
+    xml = replaceLiteral(xml, M_CUC, cuc ? X(cuc) : '');
+
+    // 3. EMPRESA
+    xml = replaceLiteral(xml, M_EMP, X(emp));
+
+    // 4. REPRESENTANTES — un parrafo por representante
+    const repParas = buildRepsXml(reps).map(line =>
+      `<w:p>${PPR_LEFT}<w:r>${RPR_BASE}<w:t xml:space="preserve">${line}</w:t></w:r></w:p>`
+    );
+    xml = replaceParagraph(xml, M_REP, repParas);
+
+    // 5. FACULTADES — un parrafo por linea, con lista cuando empieza con '- '
+    let facParas = [];
+    if (facMode === 'manual') {
+      document.getElementById('facManual').value.trim().split('\n').forEach(raw => {
+        const line = raw.trim();
+        if (!line) { facParas.push(`<w:p>${PPR_LEFT}</w:p>`); return; }
+        const isList  = line.startsWith('- ');
+        const content = isList ? line.slice(2).trim() : line;
+        facParas.push(`<w:p>${isList ? pprList(numId) : PPR_LEFT}<w:r>${RPR_BASE}<w:t xml:space="preserve">${X(content)}</w:t></w:r></w:p>`);
+      });
+    } else {
+      facParas = buildFacXml(numId);
+    }
+    xml = replaceParagraph(xml, M_FAC, facParas);
+
+    // 6. OBSERVACIONES — un parrafo por linea (si no, Word colapsa los saltos)
+    const obsParas = obs
+      ? obs.split('\n').map(l => l.trim()).filter(Boolean).map(l =>
+          `<w:p>${PPR_LEFT}<w:r>${RPR_BASE}<w:t xml:space="preserve">${X(l)}</w:t></w:r></w:p>`)
+      : [];
+    xml = replaceParagraph(xml, M_OBS, obsParas);
+
+    etapa = 'validar el XML resultante';
+    const problemas = validarXml(xml, numXmlNuevo);
+    if (problemas.length) throw new Error('XML invalido -> ' + problemas.join(' | '));
+
+    etapa = 'comprimir el .docx';
+    zip.file('word/document.xml', xml);
+
+    const blob = await zip.generateAsync({
+      type: 'blob',
+      mimeType: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+    });
+
+    etapa = 'descargar el archivo';
+    const nombreArchivo = `LC4 - ${nombreSeguro(emp)}.docx`;
+    saveAs(blob, nombreArchivo);
+    toast('ok', `Generado: ${nombreArchivo}`);
+
+  } catch (e) {
+    console.error('[LC4] Fallo al ' + etapa, e);
+    console.info('[LC4] Ejecuta  LC4.diagnostico()  en esta consola para ver el estado del formulario.');
+    toast('err', `Error al ${etapa}: ${e && e.message ? e.message : 'ver consola (F12)'}`);
+  } finally {
+    btn.disabled = false;
+    btn.innerHTML = '<svg viewBox="0 0 24 24"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg> GENERAR Y DESCARGAR LC4';
+  }
+}
+
+function toast(tipo, msg) {
+  const t = document.getElementById('toast');
+  const ico = tipo === 'ok'
+    ? '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>'
+    : '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>';
+  t.className = `toast ${tipo}`;
+  t.innerHTML = ico + msg;
+}
+
+// ── Inicializacion ──────────────────────────────────────────────
+console.log('%c Generador LC4 %c SURA Investments Peru - Cumplimiento Corporativo ',
+  'background:#161618;color:#fff;font-weight:bold;padding:3px 6px',
+  'background:#EFEFEF;color:#24272A;padding:3px 6px');
+console.log('Si algo falla, escribe  LC4.ayuda()  para ver los comandos de diagnostico.');
+document.getElementById('fecha').valueAsDate = new Date();
+agregarRep();      // arrancar con un representante
+agregarBloque();   // y un bloque de actuacion
+
+// ── Auto-resize textareas ─────────────────────────────────────────────────
+function autoResize(el) {
+  el.style.height = 'auto';
+  el.style.height = el.scrollHeight + 'px';
+}
+
+// Aplicar a todos los textareas con clase autoresize al escribir
+document.addEventListener('input', e => {
+  if (e.target.matches('textarea.autoresize')) autoResize(e.target);
+});
+</script>
+</body>
+</html>
