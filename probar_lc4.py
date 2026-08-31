@@ -143,7 +143,7 @@ CASOS = [
             {"nombre": "RAMIREZ ANA", "cargo": "TESORERO", "clase": ""},
         ],
         "bloques": [
-            {"firmantes": [0, 1], "modalidad": "mancomunada", "facultades": [1, 4], "texto": ""},
+            {"firmantes": [0, 1], "modalidad": "mancomunada", "facultades": [1, 3], "texto": ""},
         ],
     },
     {
@@ -156,7 +156,7 @@ CASOS = [
             {"nombre": "PEREZ PEPITO", "cargo": "APODERADO", "clase": "Clase A"},
         ],
         "bloques": [
-            {"firmantes": [0], "modalidad": "sola", "facultades": [5, 6, 7], "texto": ""},
+            {"firmantes": [0], "modalidad": "sola", "facultades": [4, 5, 6], "texto": ""},
         ],
     },
     {
@@ -202,6 +202,48 @@ CASOS = [
         "bloques": [
             {"firmantes": [0], "modalidad": "sola", "facultades": [0],
              "texto": "Ademas de lo anterior:\n- Aprobar presupuestos anuales.\n- Autorizar gastos operativos."},
+        ],
+    },
+    {
+        "nombre": "Genero: articulos el / la",
+        "empresa": "EMPRESA DOCE S.A.C.",
+        "cuc": "22334455",
+        "observaciones": "",
+        "formato": "cargo",
+        "representantes": [
+            {"nombre": "ARNAIZ FIGALLO MARIA", "cargo": "APODERADO", "clase": "Clase A", "genero": "f"},
+            {"nombre": "GARCIA LOPEZ JUAN", "cargo": "GERENTE GENERAL", "clase": "", "genero": "m"},
+        ],
+        "bloques": [
+            {"firmantes": [0, 1], "modalidad": "mancomunada", "facultades": [0, 1], "texto": ""},
+        ],
+    },
+    {
+        "nombre": "Genero: agrupacion en plural",
+        "empresa": "EMPRESA TRECE S.A.",
+        "cuc": "",
+        "observaciones": "",
+        "formato": "cargo",
+        "representantes": [
+            {"nombre": "FLORES VERA ANA", "cargo": "APODERADO", "clase": "Clase A", "genero": "f"},
+            {"nombre": "LOPEZ RIOS CARMEN", "cargo": "APODERADO", "clase": "Clase A", "genero": "f"},
+            {"nombre": "MENDOZA PEDRO", "cargo": "TESORERO", "clase": "", "genero": "m"},
+        ],
+        "bloques": [
+            {"firmantes": [0, 1, 2], "modalidad": "mancomunada", "facultades": [0], "texto": ""},
+        ],
+    },
+    {
+        "nombre": "Todas las facultades marcadas",
+        "empresa": "EMPRESA CATORCE S.A.C.",
+        "cuc": "",
+        "observaciones": "",
+        "formato": "cargo",
+        "representantes": [
+            {"nombre": "TORRES SILVA LUIS", "cargo": "APODERADO", "clase": ""},
+        ],
+        "bloques": [
+            {"firmantes": [0], "modalidad": "sola", "marcar_todo": True, "facultades": [], "texto": ""},
         ],
     },
     {
@@ -336,6 +378,9 @@ def llenar(drv, caso):
             escribir(drv, f"cargo-custom-{rid}", r.get("cargo_texto", "CARGO"))
         if r.get("clase"):
             escribir(drv, f"clase-{rid}", r["clase"])
+        if r.get("genero"):
+            Select(drv.find_element(By.ID, f"genero-{rid}")).select_by_value(r["genero"])
+            drv.execute_script("syncBloquesFirmantes();")
 
     drv.execute_script("syncBloquesFirmantes();")
 
@@ -376,10 +421,15 @@ def llenar(drv, caso):
             escribir(drv, f"bcombo-text-{bid}", bl["libre"])
             drv.execute_script(f"onBloqueChange({bid});")
 
+        if bl.get("marcar_todo"):
+            js_click(drv, drv.find_element(By.ID, f"btn-todo-{bid}"))
         for f in bl.get("facultades", []):
             js_click(drv, drv.find_element(By.ID, f"bchk-{bid}-{f}"))
 
         if bl.get("texto"):
+            # El area es de solo lectura mientras el candado este cerrado
+            js_click(drv, drv.find_element(By.ID, f"lock-{bid}"))
+            drv.execute_script(f"alternarEdicion({bid});")
             actual = drv.execute_script(
                 f"return document.getElementById('bfac-text-{bid}').value;")
             nuevo = (actual + "\n" + bl["texto"]) if actual else bl["texto"]

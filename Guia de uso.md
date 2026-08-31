@@ -31,8 +31,21 @@ Agregar uno por cada persona que figure en la constitución o poder recibido.
 - **Apellidos y nombres** - obligatorio
 - **Cargo** - seleccionar del desplegable (Apoderado, Gerente General, Representante, Tesorero) o elegir "Otro" para escribir uno personalizado
 - **Clase / Tipo** - solo la clase, sin repetir el cargo. Escribir `Clase A`, no `Apoderado Clase A`
+- **Género** - opcional. Ajusta el artículo y la concordancia del cargo en el texto generado
 
 Usar **+ Agregar representante** para añadir más y la **×** de la esquina para eliminar.
+
+#### Sobre el género
+
+| Género | Texto generado |
+|---|---|
+| Sin especificar | el/la APODERADO Clase A |
+| Masculino | el APODERADO Clase A |
+| Femenino | la APODERADA Clase A |
+
+En femenino se aplica la regla regular del castellano: `-o` pasa a `-a` y `-or` pasa a `-ora`. Las palabras invariables (Gerente, Representante, General) no cambian. Si un cargo no sigue esa regla, escribirlo ya en femenino con la opción "Otro" del desplegable: al terminar en `-a` no se modifica.
+
+Cuando dos o más firmantes comparten cargo, clase y género, se mencionan una sola vez en plural: `las APODERADAS Clase A` en lugar de repetir el mismo texto dos veces.
 
 > Aquí solo se identifica a las personas. Quién firma con quién se define después, en Detalle de firmantes.
 
@@ -73,11 +86,31 @@ Por cada bloque:
 
 Ejemplo de *Por grupos*: Grupo 1 = Gerente General o Tesorero, Grupo 2 = cualquier Apoderado Clase A. Significa que se necesita la firma de alguien del Grupo 1 junto con alguien del Grupo 2.
 
-**c) Facultades.** Marcar las casillas de las facultades predefinidas que apliquen. El texto se construye automáticamente en el área de abajo.
+**c) Facultades.** Marcar las casillas que apliquen. El texto se construye automáticamente en el área de abajo.
 
-Ese texto se puede editar libremente: lo escrito a mano no se pierde al cambiar la modalidad ni al seleccionar firmantes. Sí conviene tener en cuenta que **marcar o desmarcar una casilla vuelve a construir el texto desde las casillas**, así que es mejor marcar primero y editar después.
+La barra superior del bloque tiene tres controles:
+
+| Control | Qué hace |
+|---|---|
+| **Marcar todo** | Marca todas las facultades de golpe. Vuelve a pulsarse para desmarcarlas |
+| **Editar manualmente** | Desbloquea el área de texto. Mientras esté cerrado, el texto es de solo lectura y no se puede alterar por accidente |
+| **Regenerar** | Descarta las correcciones a mano y reconstruye el texto desde las casillas marcadas |
+
+El área de texto está protegida por defecto. Al activar **Editar manualmente** se vuelve editable y aparece el botón **Regenerar**. Si después se marca o desmarca una casilla, el texto escrito a mano **no se pierde**: aparece un aviso indicando que ya no coincide con las casillas, y queda a criterio del usuario mantenerlo o pulsar Regenerar.
 
 Una línea que empieza con `- ` sale como ítem de lista en Word. Sin el guion, sale como párrafo normal.
+
+#### Facultades personalizadas
+
+El panel **Facultades personalizadas**, encima de los bloques, permite añadir facultades propias que aparecerán en todos los bloques junto a las predefinidas.
+
+Se guardan en el navegador de ese equipo, no dentro del archivo. Eso implica que:
+
+- Se conservan al cerrar y volver a abrir el generador en la misma máquina
+- **No viajan** si se copia el `LC4_Generador.html` a otro equipo
+- Para compartirlas hay dos vías: **Exportar** genera un `facultades_LC4.json` que cada persona **Importa**; o bien se añaden a `ACCIONES_BASE` en `template.html` y se recompila, con lo que quedan incorporadas para todos
+
+Si el navegador tiene bloqueado el almacenamiento local, el generador avisa y las facultades funcionan igual durante la sesión, pero se pierden al cerrar.
 
 **Vista previa.** Al pie del panel aparece el texto exacto que quedará en el documento. Se actualiza conforme se completan los campos.
 
@@ -205,3 +238,7 @@ Verifica que el archivo sea correcto, no cómo se ve. Conviene abrir un par en W
 Los `.bat` deben guardarse con saltos de línea de Windows (CRLF). Con saltos de Unix, CMD parte los comandos a la mitad y falla con errores del tipo `"ocal" no se reconoce`. Algunos editores y herramientas de compresión los convierten silenciosamente.
 
 `verificar_version.py` comprueba esto automáticamente.
+
+---
+
+*Uso interno - Información confidencial*
